@@ -1,12 +1,12 @@
 plugins {
 	java
-	id("org.springframework.boot") version "4.0.1"
+	id("org.springframework.boot") version "3.3.5"
 	id("io.spring.dependency-management") version "1.1.7"
 }
 
 group = "com.sheemab"
 version = "0.0.1-SNAPSHOT"
-description = "Uber project for spring boot "
+description = "Uber project for spring boot"
 
 java {
 	toolchain {
@@ -16,7 +16,7 @@ java {
 
 configurations {
 	compileOnly {
-		extendsFrom(configurations.annotationProcessor.get())
+		extendsFrom(annotationProcessor.get())
 	}
 }
 
@@ -25,21 +25,39 @@ repositories {
 }
 
 dependencies {
+
+	// Web + REST
+	implementation("org.springframework.boot:spring-boot-starter-web")
+
+	// JPA
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+	// Redis
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	implementation("redis.clients:jedis:7.0.0")
+
+	// Validation
 	implementation("org.springframework.boot:spring-boot-starter-validation")
-	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+
+	// Swagger / OpenAPI
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+
+	// Lombok
 	compileOnly("org.projectlombok:lombok")
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	runtimeOnly("com.mysql:mysql-connector-j")
 	annotationProcessor("org.projectlombok:lombok")
-	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-data-redis-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-validation-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+
+	// Dev tools
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+	// MySQL
+	runtimeOnly("com.mysql:mysql-connector-j")
+
+	// Testing
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.withType<Test> {
+tasks.test {
 	useJUnitPlatform()
 }
+
